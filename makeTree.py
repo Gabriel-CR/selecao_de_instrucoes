@@ -43,11 +43,12 @@ if __name__ == "__main__":
 
     root = []
     root.append(linear_to_tree("MEM(+(CONST 1,CONST 2))"))
+    root.append(linear_to_tree("MEM(+( ,CONST 2))"))
     root.append(linear_to_tree("+(CONST 1,CONST 2)"))
     root.append(linear_to_tree("CONST 1,CONST 2"))
     root.append(linear_to_tree("+(CONST 1,+(CONST 2,CONST 3))"))
     root.append(linear_to_tree("+(CONST 1,+(CONST 2,+(CONST 3,CONST 4)))"))
 
-    viewTree = ViewTree(root[4])
+    viewTree = ViewTree(root[1])
 
 
