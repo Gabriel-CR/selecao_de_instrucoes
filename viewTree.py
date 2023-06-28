@@ -5,7 +5,7 @@ class ViewTree:
     def __init__(self, root):
         self.root = root
 
-        self.convert_tree_to_image(self.root, "tree")
+        self.convert_tree_to_image(self.root, "output/tree")
 
     def build_graph(self, node, graph):
         if node is None:
