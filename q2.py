@@ -48,6 +48,7 @@ def select(root):
                 return aux
 
             # vou escolher o nó atual e chamar para os seus filhos
+            # ADD
             if root.left is not None:
                 l = select(root.left)
                 root.custo = (root.custo[0] + l.custo[0], root.custo[1] + l.custo[1])
@@ -69,4 +70,13 @@ def select(root):
                 else:
                     aux.custo = ([ut.turn_linear(aux)], 1)
                 return aux
+            # SUB
+            if root.left is not None:
+                l = select(root.left)
+                root.custo = (root.custo[0] + l.custo[0], root.custo[1] + l.custo[1])
+            if root.right is not None:
+                r = select(root.right)
+                root.custo = (root.custo[0] + r.custo[0], root.custo[1] + r.custo[1])
+            root.custo = ([root.data] + root.custo[0], root.custo[1] + 1)
+            return root
 
