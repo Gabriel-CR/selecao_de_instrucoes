@@ -5,4 +5,4 @@ class Node:
         self.left = None
 
         self.escolhido = False
-        self.custo = ('', 0)
+        self.custo = ([], 0)

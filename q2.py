@@ -4,9 +4,9 @@ import utils as ut
 
 def select_instruction(linear):
     root = linear_to_tree(linear)
-    select(root)
-    print(root.custo[0])
-    print(root.custo[1])
+    r = select(root)
+    print(r.custo[0])
+    print(r.custo[1])
     return root
 
 
@@ -17,45 +17,56 @@ def select(root):
     # se for uma folha retorna o valor
     if root.left is None and root.right is None:
         root.escolhido = True
-        root.custo = (ut.turn_linear(root), 1)
+        root.custo = ([ut.turn_linear(root)], 1)
         return root
 
     # se for uma operação de + - * /
     if root.data in ['+', '-', '*', '/']:
-        # testar colocando so o no atual e chamando recursivamente para os filhos
-        op_1 = None
-        op_2 = None
-        op_3 = None
+        # ADDI
+        if root.data == '+':
+            if "CONST" in root.right.data:
+                aux = Node(root.data)
+                aux.right = root.right
+                aux.escolhido = True
+                # calcular o custo do lado left
+                if root.left is not None:
+                    l = select(root.left)
+                    aux.custo = ([ut.turn_linear(aux)] + l.custo[0], 1 + l.custo[1])
+                else:
+                    aux.custo = ([ut.turn_linear(aux)], 1)
+                return aux
+            if "CONST" in root.left.data:
+                aux = Node(root.data)
+                aux.left = root.left
+                aux.escolhido = True
+                # calcular custo do lado right
+                if root.right is not None:
+                    r = select(root.right)
+                    aux.custo = ([ut.turn_linear(aux)] + r.custo[0], 1 + r.custo[1])
+                else:
+                    aux.custo = ([ut.turn_linear(aux)], 1)
+                return aux
 
-        # testar colocando o no atual e o filho da esquerda
-        if root.left is not None:
-            op_1 = select(root.left)
-
-        # testar colocando o no atual e o filho da direita
-        if root.right is not None:
-            op_2 = select(root.right)
-
-        # testar colocando o no atual sem os filhos
-        op_3 = root
-        root.custo = ([
-            root.data,
-            ut.turn_linear(root.left),
-            ut.turn_linear(root.right)
-                      ],
-            op_1.custo[1] + op_2.custo[1] + 1
-        )
-
-        # calcular o melhor custo
-        if op_1.custo[1] < op_2.custo[1] and op_1.custo[1] < op_3.custo[1]:
-            root.escolhido = False
-            return op_1
-        elif op_2.custo[1] < op_1.custo[1] and op_2.custo[1] < op_3.custo[1]:
-            root.escolhido = False
-            return op_2
-        else:
-            root.escolhido = True
-            return op_3
-
-    # return root
-
+            # vou escolher o nó atual e chamar para os seus filhos
+            if root.left is not None:
+                l = select(root.left)
+                root.custo = (root.custo[0] + l.custo[0], root.custo[1] + l.custo[1])
+            if root.right is not None:
+                r = select(root.right)
+                root.custo = (root.custo[0] + r.custo[0], root.custo[1] + r.custo[1])
+            root.custo = ([root.data] + root.custo[0], root.custo[1] + 1)
+            return root
+        # SUBI
+        if root.data == '-':
+            if "CONST" in root.right.data:
+                aux = Node(root.data)
+                aux.right = root.right
+                aux.escolhido = True
+                # calcular o custo do lado l
+                if root.left is not None:
+                    l = select(root.left)
+                    aux.custo = ([ut.turn_linear(aux)] + l.custo[0], 1 + l.custo[1])
+                else:
+                    aux.custo = ([ut.turn_linear(aux)], 1)
+                return aux
 
