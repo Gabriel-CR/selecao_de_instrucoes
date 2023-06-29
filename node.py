@@ -3,3 +3,6 @@ class Node:
         self.data = data
         self.right = None
         self.left = None
+
+        self.escolhido = False
+        self.custo = ('', 0)

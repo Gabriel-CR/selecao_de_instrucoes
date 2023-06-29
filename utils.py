@@ -1,15 +1,4 @@
-def findParent(linearInstructions):
-    for i in range(len(linearInstructions)):
-        if linearInstructions[i] == '(':
-            return i
-
-
-def parentBalanced(linearInstructions):
-    posicao = findParent(linearInstructions)
-    if posicao == None:
-        return (linearInstructions, None)
-    else:
-        return (linearInstructions[:posicao], linearInstructions[posicao + 1:-1])
+from node import Node
 
 
 def turn_list(linearInstructions):
@@ -32,6 +21,23 @@ def turn_list(linearInstructions):
     res = [i for i in res if i != '']
 
     return res
+
+
+# função que recebe um Node e retorna a árvore em representação linear
+def turn_linear(node):
+    if node is None:
+        return ''
+
+    if node.left is None and node.right is None:
+        return node.data
+
+    if node.left is None:
+        return node.data + '(' + turn_linear(node.right) + ')'
+
+    if node.right is None:
+        return node.data + '(' + turn_linear(node.left) + ')'
+
+    return node.data + '(' + turn_linear(node.left) + ',' + turn_linear(node.right) + ')'
 
 
 if __name__ == "__main__":
