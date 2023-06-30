@@ -3,12 +3,14 @@ from q1 import linear_to_tree
 import utils as ut
 
 
-def select_instruction(linear):
+def select_instruction(linear, show=False):
     root = linear_to_tree(linear)
     r = select(root)
-    for padrao in r.custo[0]:
-        print(padrao)
-    print(f"\nCusto da solução: {r.custo[1]}")
+    if show:
+        for padrao in r.custo[0]:
+            print(padrao)
+        print(f"\nCusto da solução: {r.custo[1]}")
+    return r
 
 
 # Programação dinâmica para escolher a melhor instrução
