@@ -2,6 +2,7 @@ from node import Node
 from q1 import linear_to_tree
 import utils as ut
 
+
 def select_instruction(linear):
     root = linear_to_tree(linear)
     r = select(root)
@@ -10,9 +11,7 @@ def select_instruction(linear):
     print(f"\nCusto da solução: {r.custo[1]}")
 
 
-"""
-    Programação dinâmica para escolher a melhor instrução
-"""
+# Programação dinâmica para escolher a melhor instrução
 def select(root):
     # se for uma folha retorna o valor
     if root.left is None and root.right is None:
@@ -107,7 +106,7 @@ def select(root):
                 lr = select(root.left.right)
                 aux.custo = ([ut.turn_linear(aux)] + lr.custo[0], 1 + lr.custo[1])
                 return aux
-            aux.custo= ([ut.turn_linear(aux)], 1)
+            aux.custo = ([ut.turn_linear(aux)], 1)
             return aux
         if 'CONST' in root.left.data:
             root.custo = ([ut.turn_linear(root)], 1)
@@ -142,7 +141,7 @@ def select(root):
                 aux.custo = ([ut.turn_linear(aux)], 1)
             return aux
         # SUBI
-        if root.data == '-'and "CONST" in root.right.data:
+        if root.data == '-' and "CONST" in root.right.data:
             aux = Node(root.data)
             aux.right = root.right
             aux.escolhido = True
@@ -162,4 +161,3 @@ def select(root):
             root.custo = (root.custo[0] + r.custo[0], root.custo[1] + r.custo[1])
         root.custo = ([root.data] + root.custo[0], root.custo[1] + 1)
         return root
-
