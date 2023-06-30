@@ -14,7 +14,8 @@ if __name__ == '__main__':
     # res = sl.select_instruction("MOVE(MEM(+(-(CONST 0,CONST 1),CONST 2)),CONST 3)")
     # res = sl.select_instruction("MOVE(MEM(+(CONST 1,-(CONST 0,CONST 1))),CONST 3)")
     # res = sl.select_instruction("MOVE(MEM(CONST 1),+(CONST 2,CONST 3))")
-    res = sl.select_instruction("MOVE(MEM(*(CONST 1,CONST 2)),+(CONST 3,CONST 4))")
+    # res = sl.select_instruction("MOVE(MEM(*(CONST 1,CONST 2)),+(CONST 3,CONST 4))")
+    res = sl.select_instruction("MOVE(MEM(-(CONST 1,CONST 2)),MEM(+(CONST 3,CONST 4)))")
 
 
 

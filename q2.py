@@ -60,15 +60,28 @@ def select(root):
                 aux.custo = (r.custo[0], r.custo[1])
             aux.custo = ([ut.turn_linear(aux)] + aux.custo[0], 1 + aux.custo[1])
             return aux
+        if root.right.data != 'MEM':
+            aux = Node(root.data)
+            aux.left = Node(root.left.data)
+            if root.left.left is not None:
+                ll = select(root.left.left)
+                aux.custo = (ll.custo[0], ll.custo[1])
+            if root.right is not None:
+                r = select(root.right)
+                aux.custo = (aux.custo[0] + r.custo[0], aux.custo[1] + r.custo[1])
+            aux.custo = ([ut.turn_linear(aux)] + aux.custo[0], 1 + aux.custo[1])
+            return aux
+        # MOVEM
         aux = Node(root.data)
         aux.left = Node(root.left.data)
+        aux.right = Node(root.right.data)
         if root.left.left is not None:
             ll = select(root.left.left)
             aux.custo = (ll.custo[0], ll.custo[1])
-        if root.right is not None:
-            r = select(root.right)
-            aux.custo = (aux.custo[0] + r.custo[0], aux.custo[1] + r.custo[1])
-        aux.custo = ([ut.turn_linear(aux)] + aux.custo[0], 1 + aux.custo[1])
+        if root.right.left is not None:
+            rl = select(root.right.left)
+            aux.custo = (aux.custo[0] + rl.custo[0], aux.custo[1] + rl.custo[1])
+        aux.custo = ([ut.turn_linear(aux)] + aux.custo[0], 2 + aux.custo[1])
         return aux
 
     # LOAD
