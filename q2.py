@@ -5,9 +5,9 @@ import utils as ut
 def select_instruction(linear):
     root = linear_to_tree(linear)
     r = select(root)
-    print(r.custo[0])
-    print(r.custo[1])
-    return root
+    # print(r.custo[0])
+    # print(r.custo[1])
+    return r
 
 
 """
