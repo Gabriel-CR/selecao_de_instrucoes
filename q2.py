@@ -21,56 +21,57 @@ def select(root):
         return root
 
     # MOVE
-    if root.left.data == 'MEM':
-        if root.left.left.data == '+' and 'CONST' in root.left.left.right.data:
-            aux = Node(root.data)
-            aux.left = Node(root.left.data)
-            aux.left.left = Node(root.left.left.data)
-            aux.left.left.right = Node(root.left.left.right.data)
-            aux.escolhido = True
-            if root.right is not None:
-                r = select(root.right)
-                aux.custo = (r.custo[0], r.custo[1])
-            if root.left.left.left is not None:
-                lll = select(root.left.left.left)
-                aux.custo = (aux.custo[0] + lll.custo[0], aux.custo[1] + lll.custo[1])
-            aux.custo = ([ut.turn_linear(aux)] + aux.custo[0], 1 + aux.custo[1])
-            return aux
-        if root.left.left.data == '+' and 'CONST' in root.left.left.left.data:
-            aux = Node(root.data)
-            aux.left = Node(root.left.data)
-            aux.left.left = Node(root.left.left.data)
-            aux.left.left.left = Node(root.left.left.left.data)
-            aux.escolhido = True
-            if root.right is not None:
-                r = select(root.right)
-                aux.custo = (r.custo[0], r.custo[1])
-            if root.left.left.right is not None:
-                llr = select(root.left.left.right)
-                aux.custo = (aux.custo[0] + llr.custo[0], aux.custo[1] + llr.custo[1])
-            aux.custo = ([ut.turn_linear(aux)] + aux.custo[0], 1 + aux.custo[1])
-            return aux
-        if root.left.data == 'MEM' and 'CONST' in root.left.left.data:
-            aux = Node(root.data)
-            aux.left = Node(root.left.data)
-            aux.left.left = Node(root.left.left.data)
-            aux.escolhido = True
-            if root.right is not None:
-                r = select(root.right)
-                aux.custo = (r.custo[0], r.custo[1])
-            aux.custo = ([ut.turn_linear(aux)] + aux.custo[0], 1 + aux.custo[1])
-            return aux
-        if root.right.data != 'MEM':
-            aux = Node(root.data)
-            aux.left = Node(root.left.data)
-            if root.left.left is not None:
-                ll = select(root.left.left)
-                aux.custo = (ll.custo[0], ll.custo[1])
-            if root.right is not None:
-                r = select(root.right)
-                aux.custo = (aux.custo[0] + r.custo[0], aux.custo[1] + r.custo[1])
-            aux.custo = ([ut.turn_linear(aux)] + aux.custo[0], 1 + aux.custo[1])
-            return aux
+    if root.data == 'MOVE':
+        if root.left.data == 'MEM':
+            if root.left.left.data == '+' and 'CONST' in root.left.left.right.data:
+                aux = Node(root.data)
+                aux.left = Node(root.left.data)
+                aux.left.left = Node(root.left.left.data)
+                aux.left.left.right = Node(root.left.left.right.data)
+                aux.escolhido = True
+                if root.right is not None:
+                    r = select(root.right)
+                    aux.custo = (r.custo[0], r.custo[1])
+                if root.left.left.left is not None:
+                    lll = select(root.left.left.left)
+                    aux.custo = (aux.custo[0] + lll.custo[0], aux.custo[1] + lll.custo[1])
+                aux.custo = ([ut.turn_linear(aux)] + aux.custo[0], 1 + aux.custo[1])
+                return aux
+            if root.left.left.data == '+' and 'CONST' in root.left.left.left.data:
+                aux = Node(root.data)
+                aux.left = Node(root.left.data)
+                aux.left.left = Node(root.left.left.data)
+                aux.left.left.left = Node(root.left.left.left.data)
+                aux.escolhido = True
+                if root.right is not None:
+                    r = select(root.right)
+                    aux.custo = (r.custo[0], r.custo[1])
+                if root.left.left.right is not None:
+                    llr = select(root.left.left.right)
+                    aux.custo = (aux.custo[0] + llr.custo[0], aux.custo[1] + llr.custo[1])
+                aux.custo = ([ut.turn_linear(aux)] + aux.custo[0], 1 + aux.custo[1])
+                return aux
+            if root.left.data == 'MEM' and 'CONST' in root.left.left.data:
+                aux = Node(root.data)
+                aux.left = Node(root.left.data)
+                aux.left.left = Node(root.left.left.data)
+                aux.escolhido = True
+                if root.right is not None:
+                    r = select(root.right)
+                    aux.custo = (r.custo[0], r.custo[1])
+                aux.custo = ([ut.turn_linear(aux)] + aux.custo[0], 1 + aux.custo[1])
+                return aux
+            if root.right.data != 'MEM':
+                aux = Node(root.data)
+                aux.left = Node(root.left.data)
+                if root.left.left is not None:
+                    ll = select(root.left.left)
+                    aux.custo = (ll.custo[0], ll.custo[1])
+                if root.right is not None:
+                    r = select(root.right)
+                    aux.custo = (aux.custo[0] + r.custo[0], aux.custo[1] + r.custo[1])
+                aux.custo = ([ut.turn_linear(aux)] + aux.custo[0], 1 + aux.custo[1])
+                return aux
         # MOVEM
         aux = Node(root.data)
         aux.left = Node(root.left.data)
