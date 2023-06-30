@@ -20,6 +20,37 @@ def select(root):
         root.custo = ([ut.turn_linear(root)], 1)
         return root
 
+    # LOAD
+    if root.data == "MEM":
+        if root.left.data == '+' and 'CONST' in root.left.right.data:
+            aux = Node(root.data)
+            aux.left = Node(root.left.data)
+            aux.left.right = Node(root.left.right.data)
+            aux.escolhido = True
+            if root.left.left is not None:
+                ll = select(root.left.left)
+                aux.custo = ([ut.turn_linear(aux)] + ll.custo[0], 1 + ll.custo[1])
+                return aux
+            aux.custo = ([ut.turn_linear(aux)], 1)
+            return aux
+        if root.left.data == '+' and 'CONST' in root.left.left.data:
+            aux = Node(root.data)
+            aux.left = Node(root.left.data)
+            aux.left.left = Node(root.left.left.data)
+            aux.escolhido = True
+            if root.left.right is not None:
+                lr = select(root.left.right)
+                aux.custo = ([ut.turn_linear(aux)] + lr.custo[0], 1 + lr.custo[1])
+                return aux
+            aux.custo= ([ut.turn_linear(aux)], 1)
+            return aux
+        if 'CONST' in root.left.data:
+            root.custo = ([ut.turn_linear(root)], 1)
+            return root
+        l = select(root.left)
+        root.custo = (['MEM'] + l.custo[0], 1 + l.custo[1])
+        return root
+
     # se for uma operação de + - * /
     if root.data in ['+', '-', '*', '/']:
         # ADDI
