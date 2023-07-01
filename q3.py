@@ -92,6 +92,6 @@ def get_code(padrao):
 def gen_code(padroes):
     num_registrador = 1
     for padrao in padroes:
-        # print(f"padrao = {padrao}")
-        print(get_code(padrao))
+        print(padrao)
+        # print(get_code(padrao))
 

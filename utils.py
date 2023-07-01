@@ -40,6 +40,29 @@ def turn_linear(node):
     return node.data + '(' + turn_linear(node.left) + ',' + turn_linear(node.right) + ')'
 
 
+ordem_comandos = []
+custo = 0
+def pos_ordem(node):
+    if node is None:
+        return
+
+    # Percorre a subárvore esquerda
+    pos_ordem(node.left)
+
+    # Percorre a subárvore direita
+    pos_ordem(node.right)
+
+    # Visita o nó atual
+    ordem_comandos.append(node.custo[0])
+    global custo
+    custo += node.custo[1]
+
+
+def get_ordem(node):
+    pos_ordem(node)
+    return (ordem_comandos, custo)
+
+
 if __name__ == "__main__":
     print(turn_list("MEM(+(CONST 1,CONST 2))"))
     print(turn_list("+(CONST 1,CONST 2)"))
