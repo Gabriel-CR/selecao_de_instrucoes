@@ -6,7 +6,16 @@ import utils as ut
 def select_instruction(linear, show=False):
     root = linear_to_tree(linear)
     select(root)
-    return root
+    ordem, custo = ut.get_ordem(root)
+    ordem = [x for x in ordem if x != '']
+
+    if show:
+        for o in ordem:
+            print(o)
+
+        print(f"\nCusto das instruções: {custo}")
+
+    return ordem
 
 
 # Programação dinâmica para escolher a melhor instrução
