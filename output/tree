@@ -1,0 +1,42 @@
+digraph {
+	<node.Node object at 0x7f297f468040> [label=MOVE]
+	<node.Node object at 0x7f297f46bd90> [label=MEM]
+	<node.Node object at 0x7f297f468040> -> <node.Node object at 0x7f297f46bd90>
+	<node.Node object at 0x7f297f46bd90> [label=MEM]
+	<node.Node object at 0x7f297f46bc40> [label="+"]
+	<node.Node object at 0x7f297f46bd90> -> <node.Node object at 0x7f297f46bc40>
+	<node.Node object at 0x7f297f46bc40> [label="+"]
+	<node.Node object at 0x7f297f46bac0> [label=MEM]
+	<node.Node object at 0x7f297f46bc40> -> <node.Node object at 0x7f297f46bac0>
+	<node.Node object at 0x7f297f46bac0> [label=MEM]
+	<node.Node object at 0x7f297f46bbb0> [label="+"]
+	<node.Node object at 0x7f297f46bac0> -> <node.Node object at 0x7f297f46bbb0>
+	<node.Node object at 0x7f297f46bbb0> [label="+"]
+	<node.Node object at 0x7f297f08b9d0> [label=FP]
+	<node.Node object at 0x7f297f46bbb0> -> <node.Node object at 0x7f297f08b9d0>
+	<node.Node object at 0x7f297f08b9d0> [label=FP]
+	<node.Node object at 0x7f297f08ba00> [label="CONST a"]
+	<node.Node object at 0x7f297f46bbb0> -> <node.Node object at 0x7f297f08ba00>
+	<node.Node object at 0x7f297f08ba00> [label="CONST a"]
+	<node.Node object at 0x7f297f08ba60> [label="*"]
+	<node.Node object at 0x7f297f46bc40> -> <node.Node object at 0x7f297f08ba60>
+	<node.Node object at 0x7f297f08ba60> [label="*"]
+	<node.Node object at 0x7f297f08bac0> [label="TEMP i"]
+	<node.Node object at 0x7f297f08ba60> -> <node.Node object at 0x7f297f08bac0>
+	<node.Node object at 0x7f297f08bac0> [label="TEMP i"]
+	<node.Node object at 0x7f297f08bb20> [label="CONST 4"]
+	<node.Node object at 0x7f297f08ba60> -> <node.Node object at 0x7f297f08bb20>
+	<node.Node object at 0x7f297f08bb20> [label="CONST 4"]
+	<node.Node object at 0x7f297f08bb80> [label=MEM]
+	<node.Node object at 0x7f297f468040> -> <node.Node object at 0x7f297f08bb80>
+	<node.Node object at 0x7f297f08bb80> [label=MEM]
+	<node.Node object at 0x7f297f08bbe0> [label="+"]
+	<node.Node object at 0x7f297f08bb80> -> <node.Node object at 0x7f297f08bbe0>
+	<node.Node object at 0x7f297f08bbe0> [label="+"]
+	<node.Node object at 0x7f297f08bc40> [label=FP]
+	<node.Node object at 0x7f297f08bbe0> -> <node.Node object at 0x7f297f08bc40>
+	<node.Node object at 0x7f297f08bc40> [label=FP]
+	<node.Node object at 0x7f297f08bca0> [label="CONST X"]
+	<node.Node object at 0x7f297f08bbe0> -> <node.Node object at 0x7f297f08bca0>
+	<node.Node object at 0x7f297f08bca0> [label="CONST X"]
+}
