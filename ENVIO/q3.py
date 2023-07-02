@@ -1,5 +1,4 @@
 import utils as ut
-import q1 as mt
 
 
 def ADD(p):
@@ -63,26 +62,24 @@ def MOVEM(p):
         return True
     return False
 
-
-num_registrador = 0
+num_registrador = 1
 stack = []
-def pos_ordem(node):
+def gen_code(node):
     global num_registrador
     global stack
     if node is None:
         return
 
     # Percorre a subárvore esquerda
-    pos_ordem(node.left)
+    gen_code(node.left)
     # Percorre a subárvore direita
-    pos_ordem(node.right)
+    gen_code(node.right)
 
     if node.custo[0] == '':
         return
     if node.custo[0] == 'FP':
         node.code = 'FP'
-        stack.append(f"r{num_registrador + 1}")
-        num_registrador += 1
+        stack.append(f"r{num_registrador}")
         return
     if 'TEMP' in node.custo[0]:
         node.code = f"r{node.custo[0][5:]}"
@@ -91,6 +88,10 @@ def pos_ordem(node):
     if MOVEM(node.custo[0]):
         rj = node.left.left.code
         ri = node.right.left.code
+        if node.left.left.data == 'FP':
+            rj = stack.pop()
+        if node.right.left.data == 'FP':
+            ri = stack.pop()
         print(f"MOVEM \tM[{rj}] <- M[{ri}]")
         return
     if STORE(node.custo[0]):
@@ -98,18 +99,24 @@ def pos_ordem(node):
         c = ''
         ri = node.right.code
 
-        if node.left.left.custo[0] != '':
-            rj = node.left.left.code
-            c = 0
-        elif 'CONST' in node.left.left.data:
-            rj = 'r0'
-            c = node.left.left.data[6:]
-        elif node.left.left.right.custo[0] != '':
-            rj = node.left.left.right.code
-            c = node.left.left.left.data[6:]
+        if node.right.data == 'FP':
+            ri = stack.pop()
+
+        if node.left.left.data == 'FP' or node.left.left.right.data == 'FP' or node.left.left.left.data == 'FP':
+            rj = stack.pop()
         else:
-            rj = node.left.left.left.code
-            c = node.left.left.right.data[6:]
+            if node.left.left.custo[0] != '':
+                rj = node.left.left.code
+                c = 0
+            elif 'CONST' in node.left.left.data:
+                rj = 'r0'
+                c = node.left.left.data[6:]
+            elif node.left.left.right.custo[0] != '':
+                rj = node.left.left.right.code
+                c = node.left.left.left.data[6:]
+            else:
+                rj = node.left.left.left.code
+                c = node.left.left.right.data[6:]
 
         print(f"STORE \tM[{rj} + {c}] <- {ri}")
         return
@@ -119,8 +126,11 @@ def pos_ordem(node):
         c = ''
 
         if node.left.custo[0] != '':
-            ri = f"r{num_registrador + 1}"
-            num_registrador += 1
+            if node.left.data == 'FP':
+                ri = stack.pop()
+            else:
+                ri = f"r{num_registrador + 1}"
+                num_registrador += 1
             rj = node.left.code
             c = '0'
         elif 'CONST' in node.left.data:
@@ -130,19 +140,25 @@ def pos_ordem(node):
             c = node.left.data[6:]
         elif node.left.right.custo[0] != '':
             rj = node.left.right.code
-            if rj[0] == 'r' and len(rj) > 1:
-                ri = rj
+            if node.left.right.data == 'FP':
+                ri = stack.pop()
             else:
-                ri = f"r{num_registrador + 1}"
-                num_registrador += 1
+                if rj[0] == 'r' and len(rj) > 1:
+                    ri = rj
+                else:
+                    ri = f"r{num_registrador + 1}"
+                    num_registrador += 1
             c = node.left.left.data[6:]
         else:
             rj = node.left.left.code
-            if rj[0] == 'r' and len(rj) > 1:
-                ri = rj
+            if node.left.left.data == 'FP':
+                ri = stack.pop()
             else:
-                ri = f"r{num_registrador + 1}"
-                num_registrador += 1
+                if rj[0] == 'r' and len(rj) > 1:
+                    ri = rj
+                else:
+                    ri = f"r{num_registrador + 1}"
+                    num_registrador += 1
             c = node.left.right.data[6:]
 
         node.code = ri
@@ -153,11 +169,14 @@ def pos_ordem(node):
         rj = node.left.code
         c = node.right.data[6:]
 
-        if rj[0] == 'r' and len(rj) > 1:
-            ri = rj
+        if node.left.data == 'FP':
+            ri = stack.pop()
         else:
-            ri = f"r{num_registrador + 1}"
-            num_registrador += 1
+            if rj[0] == 'r' and len(rj) > 1:
+                ri = rj
+            else:
+                ri = f"r{num_registrador + 1}"
+                num_registrador += 1
 
         node.code = ri
         print(f"SUBI \t{ri} <- {rj} - {c}")
@@ -168,32 +187,31 @@ def pos_ordem(node):
         c = ''
 
         if node.custo[0][:5] == 'CONST':
-            print(1)
             ri = f"r{num_registrador + 1}"
             num_registrador += 1
             rj = 'r0'
             c = node.data[6:]
         elif node.right.custo[0] != '':
-            print(2)
             rj = node.right.code
-            if rj[0] == 'r' and len(rj) > 1:
-                print(3)
-                ri = rj
+            if node.right.data == 'FP':
+                ri = stack.pop()
             else:
-                print(4)
-                ri = f"r{num_registrador + 1}"
-                num_registrador += 1
+                if rj[0] == 'r' and len(rj) > 1:
+                    ri = rj
+                else:
+                    ri = f"r{num_registrador + 1}"
+                    num_registrador += 1
             c = node.left.data[6:]
         else:
-            print(5)
             rj = node.left.code
-            if rj[0] == 'r' and len(rj) > 1:
-                print(6)
-                ri = rj
+            if node.left.data == 'FP':
+                ri = stack.pop()
             else:
-                print(7)
-                ri = f"r{num_registrador + 1}"
-                num_registrador += 1
+                if rj[0] == 'r' and len(rj) > 1:
+                    ri = rj
+                else:
+                    ri = f"r{num_registrador + 1}"
+                    num_registrador += 1
             c = node.right.data[6:]
 
         node.code = ri
@@ -202,11 +220,11 @@ def pos_ordem(node):
 
     if node.data in ['+', '-', '*', '/']:
         ri = node.left.code if node.left.code != 'ri' else node.right.code
-        # num_registrador += 1
         rj = node.left.code
         rk = node.right.code
+
         if node.data == '+':
-            print(f"ADD \t{ri} <- {rj} {node.data} {rk}")
+            print(f"ADD \t{ri} <- {rj} + {rk}")
         elif node.data == '-':
             print(f"SUB \t{ri} <- {rj} - {rk}")
         elif node.data == '*':
@@ -216,32 +234,3 @@ def pos_ordem(node):
 
         node.code = ri
         return
-
-
-def get_code(padrao, node=None):
-    if MOVEM(padrao):
-        return f"MOVEM \tM[rj] <- M[ri]"
-    if STORE(padrao):
-        return f"STORE \tM[rj + c] <- ri"
-    if LOAD(padrao):
-        return f"LOAD \tri <- M[rj + c]"
-    if ADDI(padrao):
-        return f"ADDI \tri <- rj + c"
-    if SUBI(padrao):
-        return f"SUBI \tri <- rj - c"
-    if ADD(padrao):
-        return f"ADD \tri <- rj + rk"
-    if MUL(padrao):
-        return f"MUL \tri <- rj * rk"
-    if SUB(padrao):
-        return f"SUB \tri <- rj - rk"
-    if DIV(padrao):
-        return f"DIV \tri <- rj / rk"
-
-def gen_code(padroes):
-    for padrao in padroes:
-        c = get_code(padrao)
-        if c is not None:
-            print(c)
-        # else:
-        #     print(padrao)
