@@ -63,7 +63,7 @@ def MOVEM(p):
         return True
     return False
 
-num_registrador = 0
+num_registrador = 1
 stack = []
 def gen_code(node):
     global num_registrador
@@ -80,8 +80,7 @@ def gen_code(node):
         return
     if node.custo[0] == 'FP':
         node.code = 'FP'
-        stack.append(f"r{num_registrador + 1}")
-        num_registrador += 1
+        stack.append(f"r{num_registrador}")
         return
     if 'TEMP' in node.custo[0]:
         node.code = f"r{node.custo[0][5:]}"
@@ -90,6 +89,10 @@ def gen_code(node):
     if MOVEM(node.custo[0]):
         rj = node.left.left.code
         ri = node.right.left.code
+        if node.left.left.data == 'FP':
+            rj = stack.pop()
+        if node.right.left.data == 'FP':
+            ri = stack.pop()
         print(f"MOVEM \tM[{rj}] <- M[{ri}]")
         return
     if STORE(node.custo[0]):
@@ -182,19 +185,25 @@ def gen_code(node):
             c = node.data[6:]
         elif node.right.custo[0] != '':
             rj = node.right.code
-            if rj[0] == 'r' and len(rj) > 1:
-                ri = rj
+            if node.right.data == 'FP':
+                ri = stack.pop()
             else:
-                ri = f"r{num_registrador + 1}"
-                num_registrador += 1
+                if rj[0] == 'r' and len(rj) > 1:
+                    ri = rj
+                else:
+                    ri = f"r{num_registrador + 1}"
+                    num_registrador += 1
             c = node.left.data[6:]
         else:
             rj = node.left.code
-            if rj[0] == 'r' and len(rj) > 1:
-                ri = rj
+            if node.left.data == 'FP':
+                ri = stack.pop()
             else:
-                ri = f"r{num_registrador + 1}"
-                num_registrador += 1
+                if rj[0] == 'r' and len(rj) > 1:
+                    ri = rj
+                else:
+                    ri = f"r{num_registrador + 1}"
+                    num_registrador += 1
             c = node.right.data[6:]
 
         node.code = ri
