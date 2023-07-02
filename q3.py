@@ -118,8 +118,11 @@ def gen_code(node):
         c = ''
 
         if node.left.custo[0] != '':
-            ri = f"r{num_registrador + 1}"
-            num_registrador += 1
+            if node.left.data == 'FP':
+                ri = stack.pop()
+            else:
+                ri = f"r{num_registrador + 1}"
+                num_registrador += 1
             rj = node.left.code
             c = '0'
         elif 'CONST' in node.left.data:
@@ -129,19 +132,25 @@ def gen_code(node):
             c = node.left.data[6:]
         elif node.left.right.custo[0] != '':
             rj = node.left.right.code
-            if rj[0] == 'r' and len(rj) > 1:
-                ri = rj
+            if node.left.right.data == 'FP':
+                ri = stack.pop()
             else:
-                ri = f"r{num_registrador + 1}"
-                num_registrador += 1
+                if rj[0] == 'r' and len(rj) > 1:
+                    ri = rj
+                else:
+                    ri = f"r{num_registrador + 1}"
+                    num_registrador += 1
             c = node.left.left.data[6:]
         else:
             rj = node.left.left.code
-            if rj[0] == 'r' and len(rj) > 1:
-                ri = rj
+            if node.left.left.data == 'FP':
+                ri = stack.pop()
             else:
-                ri = f"r{num_registrador + 1}"
-                num_registrador += 1
+                if rj[0] == 'r' and len(rj) > 1:
+                    ri = rj
+                else:
+                    ri = f"r{num_registrador + 1}"
+                    num_registrador += 1
             c = node.left.right.data[6:]
 
         node.code = ri
