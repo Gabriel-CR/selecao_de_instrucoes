@@ -15,7 +15,7 @@ def menu():
     else:
         print("Digite a forma linear")
         linear = input("> ")
-        # linear = input()
+
         if questao == 'q1':
             tree = mt.linear_to_tree(linear)
             print("[AVISO] A imagem da árvore deve aparecer automaticamente na tela,\n"
@@ -24,8 +24,6 @@ def menu():
         elif questao == 'q2':
             sl.select_instruction(linear, True)
         elif questao == 'q3':
-            # padroes = sl.select_instruction(linear)
-            # pd.gen_code(padroes)
             root = sl.select_instruction(linear)
             pd.gen_code(root)
 

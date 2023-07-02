@@ -1,5 +1,4 @@
 import utils as ut
-import q1 as mt
 
 
 def ADD(p):
@@ -100,18 +99,24 @@ def gen_code(node):
         c = ''
         ri = node.right.code
 
-        if node.left.left.custo[0] != '':
-            rj = node.left.left.code
-            c = 0
-        elif 'CONST' in node.left.left.data:
-            rj = 'r0'
-            c = node.left.left.data[6:]
-        elif node.left.left.right.custo[0] != '':
-            rj = node.left.left.right.code
-            c = node.left.left.left.data[6:]
+        if node.right.data == 'FP':
+            ri = stack.pop()
+
+        if node.left.left.data == 'FP' or node.left.left.right.data == 'FP' or node.left.left.left.data == 'FP':
+            rj = stack.pop()
         else:
-            rj = node.left.left.left.code
-            c = node.left.left.right.data[6:]
+            if node.left.left.custo[0] != '':
+                rj = node.left.left.code
+                c = 0
+            elif 'CONST' in node.left.left.data:
+                rj = 'r0'
+                c = node.left.left.data[6:]
+            elif node.left.left.right.custo[0] != '':
+                rj = node.left.left.right.code
+                c = node.left.left.left.data[6:]
+            else:
+                rj = node.left.left.left.code
+                c = node.left.left.right.data[6:]
 
         print(f"STORE \tM[{rj} + {c}] <- {ri}")
         return
@@ -164,11 +169,14 @@ def gen_code(node):
         rj = node.left.code
         c = node.right.data[6:]
 
-        if rj[0] == 'r' and len(rj) > 1:
-            ri = rj
+        if node.left.data == 'FP':
+            ri = stack.pop()
         else:
-            ri = f"r{num_registrador + 1}"
-            num_registrador += 1
+            if rj[0] == 'r' and len(rj) > 1:
+                ri = rj
+            else:
+                ri = f"r{num_registrador + 1}"
+                num_registrador += 1
 
         node.code = ri
         print(f"SUBI \t{ri} <- {rj} - {c}")
