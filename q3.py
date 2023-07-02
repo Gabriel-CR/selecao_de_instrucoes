@@ -63,19 +63,18 @@ def MOVEM(p):
         return True
     return False
 
-
 num_registrador = 0
 stack = []
-def pos_ordem(node):
+def gen_code(node):
     global num_registrador
     global stack
     if node is None:
         return
 
     # Percorre a subárvore esquerda
-    pos_ordem(node.left)
+    gen_code(node.left)
     # Percorre a subárvore direita
-    pos_ordem(node.right)
+    gen_code(node.right)
 
     if node.custo[0] == '':
         return
@@ -168,30 +167,23 @@ def pos_ordem(node):
         c = ''
 
         if node.custo[0][:5] == 'CONST':
-            print(1)
             ri = f"r{num_registrador + 1}"
             num_registrador += 1
             rj = 'r0'
             c = node.data[6:]
         elif node.right.custo[0] != '':
-            print(2)
             rj = node.right.code
             if rj[0] == 'r' and len(rj) > 1:
-                print(3)
                 ri = rj
             else:
-                print(4)
                 ri = f"r{num_registrador + 1}"
                 num_registrador += 1
             c = node.left.data[6:]
         else:
-            print(5)
             rj = node.left.code
             if rj[0] == 'r' and len(rj) > 1:
-                print(6)
                 ri = rj
             else:
-                print(7)
                 ri = f"r{num_registrador + 1}"
                 num_registrador += 1
             c = node.right.data[6:]
@@ -216,32 +208,3 @@ def pos_ordem(node):
 
         node.code = ri
         return
-
-
-def get_code(padrao, node=None):
-    if MOVEM(padrao):
-        return f"MOVEM \tM[rj] <- M[ri]"
-    if STORE(padrao):
-        return f"STORE \tM[rj + c] <- ri"
-    if LOAD(padrao):
-        return f"LOAD \tri <- M[rj + c]"
-    if ADDI(padrao):
-        return f"ADDI \tri <- rj + c"
-    if SUBI(padrao):
-        return f"SUBI \tri <- rj - c"
-    if ADD(padrao):
-        return f"ADD \tri <- rj + rk"
-    if MUL(padrao):
-        return f"MUL \tri <- rj * rk"
-    if SUB(padrao):
-        return f"SUB \tri <- rj - rk"
-    if DIV(padrao):
-        return f"DIV \tri <- rj / rk"
-
-def gen_code(padroes):
-    for padrao in padroes:
-        c = get_code(padrao)
-        if c is not None:
-            print(c)
-        # else:
-        #     print(padrao)

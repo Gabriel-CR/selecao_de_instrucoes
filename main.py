@@ -27,7 +27,7 @@ def menu():
             # padroes = sl.select_instruction(linear)
             # pd.gen_code(padroes)
             root = sl.select_instruction(linear)
-            pd.pos_ordem(root)
+            pd.gen_code(root)
 
 
 if __name__ == '__main__':
