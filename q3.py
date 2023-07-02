@@ -220,11 +220,11 @@ def gen_code(node):
 
     if node.data in ['+', '-', '*', '/']:
         ri = node.left.code if node.left.code != 'ri' else node.right.code
-        # num_registrador += 1
         rj = node.left.code
         rk = node.right.code
+
         if node.data == '+':
-            print(f"ADD \t{ri} <- {rj} {node.data} {rk}")
+            print(f"ADD \t{ri} <- {rj} + {rk}")
         elif node.data == '-':
             print(f"SUB \t{ri} <- {rj} - {rk}")
         elif node.data == '*':

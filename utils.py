@@ -61,10 +61,3 @@ def pos_ordem(node):
 def get_ordem(node):
     pos_ordem(node)
     return (ordem_comandos, custo)
-
-
-if __name__ == "__main__":
-    print(turn_list("MEM(+(CONST 1,CONST 2))"))
-    print(turn_list("+(CONST 1,CONST 2)"))
-    print(turn_list("CONST 1,CONST 2"))
-    print(turn_list("+(CONST 1,+(CONST 2,CONST 3))"))

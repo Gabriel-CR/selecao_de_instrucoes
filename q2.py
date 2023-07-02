@@ -15,7 +15,6 @@ def select_instruction(linear, show=False):
 
         print(f"\nCusto das instruções: {custo}")
 
-    # return ordem
     return root
 
 # Programação dinâmica para escolher a melhor instrução

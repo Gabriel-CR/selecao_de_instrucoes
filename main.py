@@ -7,7 +7,6 @@ from viewTree import ViewTree
 def menu():
     print("Digite a questão")
     questao = input("> ")
-    # questao = input()
 
     if questao not in ['q1', 'q2', 'q3']:
         print("[ERRO]: digite q1, q2, ou q3 para as questões\n"
