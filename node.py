@@ -4,3 +4,4 @@ class Node:
         self.right = None
         self.left = None
         self.custo = ('', 0)
+        self.code = ''

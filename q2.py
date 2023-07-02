@@ -15,14 +15,17 @@ def select_instruction(linear, show=False):
 
         print(f"\nCusto das instruções: {custo}")
 
-    return ordem
-
+    # return ordem
+    return root
 
 # Programação dinâmica para escolher a melhor instrução
 def select(root):
     # se for uma folha retorna o valor
     if root.left is None and root.right is None:
-        root.custo = (ut.turn_linear(root), 1)
+        if 'TEMP' in root.data:
+            root.custo = (ut.turn_linear(root), 0)
+        else:
+            root.custo = (ut.turn_linear(root), 1)
         return
 
     # MOVE

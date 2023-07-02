@@ -38,18 +38,3 @@ def print_tree(node, level=0):
     return
 
 
-if __name__ == "__main__":
-    from viewTree import ViewTree
-
-    root = []
-    root.append(linear_to_tree("MEM(+(CONST 1,CONST 2))"))
-    root.append(linear_to_tree("MEM(+( ,CONST 2))"))
-    root.append(linear_to_tree("+(CONST 1,CONST 2)"))
-    root.append(linear_to_tree("CONST 1,CONST 2"))
-    root.append(linear_to_tree("+(CONST 1,+(CONST 2,CONST 3))"))
-    root.append(linear_to_tree("+(CONST 1,+(CONST 2,+(CONST 3,CONST 4)))"))
-    root.append(linear_to_tree("+"))
-
-    viewTree = ViewTree(root[-1])
-
-
